@@ -1,0 +1,15 @@
+create table schema_system.comment (id bigserial not null, created_at timestamp(6), removed boolean not null, text varchar(255), contactor_id bigint, primary key (id));
+create table schema_system.contractor (id bigserial not null, country varchar(255), email varchar(255), first_name varchar(255), last_name varchar(255), patronymic varchar(255), phone varchar(255), removed boolean not null, telegram varchar(255), credential_id bigint, primary key (id));
+create table schema_system.credential (id bigserial not null, created_at timestamp(6), removed boolean not null, text varchar(255), type_of_contractor smallint, version varchar(255), primary key (id));
+create table schema_system.document (id bigserial not null, created_at timestamp(6), doc_title smallint, number varchar(255), removed boolean not null, updated_at timestamp(6), file_id bigint, primary key (id));
+create table schema_system.field (id bigserial not null, created_at timestamp(6), default_value varchar(5000), name varchar(255), placeholder varchar(255), removed boolean not null, type varchar(255), updated_at timestamp(6), document_id bigint, template_id bigint, primary key (id));
+create table schema_system.file (id bigserial not null, created_at timestamp(6), description varchar(255), extension smallint, is_zip boolean not null, name varchar(255), removed boolean not null, size varchar(255), store varchar(255), updated_at timestamp(6), primary key (id));
+create table schema_system.related (id bigserial not null, created_at timestamp(6), related_id bigint, removed boolean, updated_at timestamp(6), document_id bigint, primary key (id));
+create table schema_system.template (id bigserial not null, created_at timestamp(6), doc_title smallint, removed boolean not null, title varchar(255), updated_at timestamp(6), version varchar(255), primary key (id));
+create table schema_system.users (id bigserial not null, created_at timestamp(6), email varchar(255), first_name varchar(255), last_name varchar(255), last_visit_at timestamp(6), login varchar(255), password varchar(255), patronymic varchar(255), removed boolean not null, role varchar(255), telegram varchar(255), updated_at timestamp(6), primary key (id));
+alter table if exists schema_system.comment add constraint FKrodr200o6xyaeaduxa11pehvl foreign key (contactor_id) references schema_system.contractor;
+alter table if exists schema_system.contractor add constraint FKnt58l4w50g3d5w7dy0m3ngkma foreign key (credential_id) references schema_system.credential;
+alter table if exists schema_system.document add constraint FK9x6lrkvb1mh5ei4yhhj2xr4lw foreign key (file_id) references schema_system.file;
+alter table if exists schema_system.field add constraint FKlmrbf30ugggypq2ccwjf61k1f foreign key (document_id) references schema_system.document;
+alter table if exists schema_system.field add constraint FKnjv4ikp4djrothsmynsha2y0s foreign key (template_id) references schema_system.template;
+alter table if exists schema_system.related add constraint FK4demrlsgbpwn987lhtht3x9f1 foreign key (document_id) references schema_system.document;
